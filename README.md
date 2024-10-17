@@ -1,2 +1,2 @@
 # credit-card-approval
-Credit card approval prediction
+Data source: https://www.kaggle.com/datasets/rikdifos/credit-card-approval-prediction
