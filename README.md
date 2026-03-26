@@ -1,5 +1,5 @@
 # Credit Card Approval Prediction
-Data source: https://www.kaggle.com/datasets/rikdifos/credit-card-approval-prediction
+Live Demo: [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://credit-card-approval-aliciatxp.streamlit.app/)
 
 ## Overview
 This project develops a machine learning model to predict whether an applicant should be approved for a credit card based on their personal and financial information. As credit card delinquencies rise amid economic uncertainty, with consumer debt reaching $17.5 trillion in 2023, banks face significant financial losses due to credit risk. Our solution aims to help financial institutions identify creditworthy applicants more effectively, reducing potential losses while ensuring deserving applicants aren't wrongly rejected.
@@ -90,3 +90,5 @@ Decision Trees outperformed both Random Forests and Logistic Regression, particu
 - Haidah
 - Mujie
 - Shauna
+
+Data source: https://www.kaggle.com/datasets/rikdifos/credit-card-approval-prediction
