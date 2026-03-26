@@ -89,7 +89,7 @@ OCCUPATION_TYPES = [
 ]
 
 # ── Data path — works locally and on Streamlit Cloud ──────────────────────────
-DATA_DIR = Path(__file__).parent / "data"
+DATA_DIR = Path(__file__).parent.parent / "data"
 
 # ── Step 1: Load & label (exact notebook pipeline) ────────────────────────────
 @st.cache_data(show_spinner=False)
