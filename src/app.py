@@ -88,7 +88,7 @@ OCCUPATION_TYPES = [
     "Unknown", "None",
 ]
 
-# ── Data path — works locally and on Streamlit Cloud ──────────────────────────
+# ── Data path: src/app.py → ../data/ ──────────────────────────────────────────
 DATA_DIR = Path(__file__).parent.parent / "data"
 
 # ── Step 1: Load & label (exact notebook pipeline) ────────────────────────────
@@ -99,7 +99,7 @@ def load_and_label_data():
 
     if not credit_path.exists() or not app_path.exists():
         return None, (
-            "Data files not found in `data/`. "
+            "❌ Data files not found in `data/`. "
             "Add `credit_record.csv` and `application_record.csv` from "
             "[Kaggle](https://www.kaggle.com/datasets/rikdifos/credit-card-approval-prediction) "
             "to your repo's `data/` folder."
@@ -156,12 +156,20 @@ def load_and_label_data():
             return "0"
         return "1"
 
-    result = (
-        credit_record.groupby("ID")
-        .apply(classify_client)
-        .reset_index()
-        .rename(columns={0: "Classification"})
-    )
+    try:
+        result = (
+            credit_record.groupby("ID")
+            .apply(classify_client, include_groups=False)
+            .reset_index()
+            .rename(columns={0: "Classification"})
+        )
+    except TypeError:
+        result = (
+            credit_record.groupby("ID")
+            .apply(classify_client)
+            .reset_index()
+            .rename(columns={0: "Classification"})
+        )
 
     df = application_record.merge(result, on="ID", how="inner").drop("ID", axis=1)
     return df, None
@@ -178,7 +186,10 @@ def train_pipeline(df):
         X, y, test_size=0.3, random_state=42, stratify=y
     )
 
-    ohe = OneHotEncoder(sparse_output=False, handle_unknown="ignore")
+    try:
+        ohe = OneHotEncoder(sparse_output=False, handle_unknown="ignore")
+    except TypeError:
+        ohe = OneHotEncoder(sparse=False, handle_unknown="ignore")
     oe  = OrdinalEncoder(
         categories=[EDUCATION_ORDER],
         handle_unknown="use_encoded_value", unknown_value=-1,
@@ -282,7 +293,7 @@ with st.spinner(f"Training models on {len(df):,} real applicants…"):
 # SIDEBAR
 # ══════════════════════════════════════════════════════════════════════════════
 with st.sidebar:
-    st.markdown("## Applicant Details")
+    st.markdown("## 💳 Applicant Details")
     st.markdown("---")
     gender = st.radio("Gender", ["Female", "Male"], horizontal=True)
     age    = st.slider("Age", 18, 75, 32)
@@ -308,7 +319,7 @@ with st.sidebar:
         "Model", ["Decision Tree", "Random Forest", "Logistic Regression"],
         help="Decision Tree achieved the highest macro recall in the original study.",
     )
-    predict_btn = st.button("🔍 Predict Approval", use_container_width=True)
+    predict_btn = st.button("Predict Approval", use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # MAIN
